@@ -1,1 +1,1 @@
-# DTQ
+# Deep Transferring Quantization
