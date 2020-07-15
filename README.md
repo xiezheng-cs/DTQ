@@ -13,9 +13,7 @@ We provide PyTorch implementation for "Deep Transferring Quantization".
 
 ## Dependencies
 
-* Python 3.6
-* PyTorch 1.2.0
-* dependencies in requirements.txt
+* 
 
 <br/>
 
