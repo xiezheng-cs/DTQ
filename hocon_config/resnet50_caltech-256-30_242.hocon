@@ -1,0 +1,44 @@
+# ------------- data options ----------------------------------------
+target_dataset = "Caltech_256-30"  # Stanford_Dogs, Caltech_256-30, Caltech_256-60, CUB-200-2011, Food-101
+target_data_dir = "/mnt/ssd/datasets/Fine-Grained_Recognition/"
+
+
+# ------------- general options -------------------------------------------
+outpath = "./quantized_transfer_log/Google_quantized_transfer_4bits_resnet50/"
+gpu_id = "4,5"
+print_freq = 10
+batch_size = 64
+num_workers = 4
+exp_id = "quantized_resnet50_transfer_4bits_Stanford_Dogs_20200222"
+
+
+# ------------- common optimization options ----------------------------
+repeat = 5
+lr = 0.01        # 0.01 for resnet101, 0.001 for inception_v3
+max_iter = 9000       # 9000, 6000 decay
+momentum = 0.9
+weight_decay = 1e-4   # for classifier
+gamma = 0.1
+
+
+# ------------- model options ------------------------------------------
+base_task = "imagenet"            # imagenet
+base_model_name = "resnet50"     # resnet50, mobilenet_v2
+image_size = 224                  # 224 for resnet101, mobilenet_v2
+data_aug = "default"              # default
+bits_weights = 4                 # 32, 2, 4 bit
+bits_activations = 4             # 32, 2, 4 bit
+
+
+# ------------- finetuning options ------------------------------------------
+loss_type = "CrossEntropyLoss"       # CrossEntropyLoss, loss_label_smoothing
+lr_scheduler = "steplr"              # coslr, steplr
+reg_type = "channel_att_fea_map_learn"  # channel_att_fea_map_learn, fea_loss
+lambada = 0.5                    # kl_loss weight, lambada =0.0, 0.5, 1.0, 2.0
+theta = 0.03                    # channel_att_fea_map_loss theta 0.01
+T = 60
+
+
+# ------------- resume or retrain options ------------------------------
+pretrain_path = ""
+resume = ""
