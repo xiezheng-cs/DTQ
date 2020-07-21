@@ -10,7 +10,7 @@ gpu_id = "7"       # single-gpu
 print_freq = 10
 batch_size = 64
 num_workers = 4
-exp_id = "Caltech_256-30_20200303_4bit"
+exp_id = "20200303"
 
 
 # ------------- common optimization options ----------------------------
