@@ -4,12 +4,12 @@ target_data_dir = "/mnt/ssd/datasets/Fine-Grained_Recognition/"
 
 
 # ------------- general options -------------------------------------------
-outpath = "./quantized_transfer_log/Google_quantized_transfer_4bits_resnet50/"
-gpu_id = "4,5"
+outpath = "./exp_log/resnet-50/DTQ/4bits"
+gpu_id = "4"
 print_freq = 10
 batch_size = 64
 num_workers = 4
-exp_id = "20200222"
+exp_id = "20200730"
 
 
 # ------------- common optimization options ----------------------------
@@ -24,10 +24,10 @@ gamma = 0.1
 # ------------- model options ------------------------------------------
 base_task = "imagenet"            # imagenet
 base_model_name = "resnet50"     # resnet50, mobilenet_v2
-image_size = 224                  # 224 for resnet101, mobilenet_v2
+image_size = 224                  # 224 for resnet50, mobilenet_v2
 data_aug = "default"              # default
-bits_weights = 4                 # 32, 2, 4 bit
-bits_activations = 4             # 32, 2, 4 bit
+bits_weights = 4                 # 32, 5, 4 bit
+bits_activations = 4             # 32, 5, 4 bit
 
 
 # ------------- finetuning options ------------------------------------------
@@ -35,7 +35,7 @@ loss_type = "CrossEntropyLoss"       # CrossEntropyLoss, loss_label_smoothing
 lr_scheduler = "steplr"              # coslr, steplr
 reg_type = "channel_att_fea_map_learn"  # channel_att_fea_map_learn, fea_loss
 lambada = 0.5                    # kl_loss weight, lambada =0.0, 0.5, 1.0, 2.0
-theta = 0.01                    # channel_att_fea_map_loss theta 0.01
+theta = 0.01                     # channel_att_fea_map_loss theta 0.01
 T = 60.0
 
 

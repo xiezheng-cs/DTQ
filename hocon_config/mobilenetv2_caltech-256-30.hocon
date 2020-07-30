@@ -1,16 +1,15 @@
 # ------------- data options ----------------------------------------
 target_dataset = "Caltech_256-30"  # Stanford_Dogs, Caltech_256-30, Caltech_256-60, CUB-200-2011, Food-101
 target_data_dir = "/mnt/ssd/datasets/Fine-Grained_Recognition/"
-# target_data_dir = "/home/datasets/Fine-Grained_Recognition/"
 
 
 # ------------- general options -------------------------------------------
-outpath = "./quantized_transfer/mobilenet_v2/ours/4bits"
+outpath = "./exp_log/mobilenet_v2/DTQ/4bits"
 gpu_id = "7"       # single-gpu
 print_freq = 10
 batch_size = 64
 num_workers = 4
-exp_id = "20200303"
+exp_id = "20200730"
 
 
 # ------------- common optimization options ----------------------------
@@ -27,8 +26,8 @@ base_task = "imagenet"            # imagenet
 base_model_name = "mobilenet_v2"     # resnet50, mobilenet_v2
 image_size = 224                  # 224 for resnet101, mobilenet_v2
 data_aug = "default"              # default
-bits_weights = 4                 # 32, 2, 4 bit
-bits_activations = 4             # 32, 2, 4 bit
+bits_weights = 4                 # 32, 5, 4 bit
+bits_activations = 4             # 32, 5, 4 bit
 
 
 # ------------- finetuning options ------------------------------------------
@@ -36,7 +35,7 @@ loss_type = "CrossEntropyLoss"       # CrossEntropyLoss, loss_label_smoothing
 lr_scheduler = "steplr"              # coslr, steplr
 reg_type = "channel_att_fea_map_learn"  # channel_att_fea_map_learn, fea_loss
 lambada = 0.5                    # kl_loss weight, lambada =0.0, 0.5, 1.0, 2.0
-theta = 0.01                    # channel_att_fea_map_loss theta 0.01
+theta = 0.01                     # channel_att_fea_map_loss theta 0.01
 T = 30.0
 
 
