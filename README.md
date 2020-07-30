@@ -13,26 +13,44 @@ We provide PyTorch implementation for "Deep Transferring Quantization".
 
 ## Dependencies
 
-* 
-
-<br/>
+* Python 3.6
+* PyTorch 1.1.0
+* dependencies in requirements.txt
 
 
 ## Getting Started
 
-
 ### Installation
+
+1. Clone this repo:
+
+        git clone https://github.com/xiezheng-cs/DTQ.git
+        cd DTQ
+
+2. Install pytorch and other dependencies.
+
+        pip install -r requirements.txt
 
 
 ### Training
 
+To quantize the pretrained MobileNetV2 on Caltech 256-30 to 4-bit:
+
+    python main.py ./hocon_config/mobilenetv2_caltech-256-30.hocon
+
+To quantize the pretrained ResNet-50 on Caltech 256-30 to 4-bit:
+
+    python main.py ./hocon_config/resnet50_caltech-256-30.hocon
 
 <br/>
 
 
 ## Results
 
-
+  |  Target Data Set | Model | W / A | DELTA-Q Top1 Acc(%) | DTQ(Ours) Top1 Acc(%) |
+   | :-: | :-: | :-: | :-: | :-: |
+  | Caltech 256-30 | MobileNetV2 | 4 / 4 | 74.0±0.7 | **75.9±1.2** |
+  | Caltech 256-30 |  ResNet-50  | 4 / 4 | 82.8±0.5 | **83.5±0.6** |
 
 <br/>
 
