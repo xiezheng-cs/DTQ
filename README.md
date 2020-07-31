@@ -36,11 +36,11 @@ We provide PyTorch implementation for "Deep Transferring Quantization".
 
 To quantize the pretrained MobileNetV2 on Caltech 256-30 to 4-bit:
 
-    python main.py ./hocon_config/mobilenetv2_caltech-256-30.hocon
+    python main.py hocon_config/mobilenetv2_caltech-256-30.hocon
 
 To quantize the pretrained ResNet-50 on Caltech 256-30 to 4-bit:
 
-    python main.py ./hocon_config/resnet50_caltech-256-30.hocon
+    python main.py hocon_config/resnet50_caltech-256-30.hocon
 
 <br/>
 
