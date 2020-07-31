@@ -4,7 +4,7 @@ target_data_dir = "/mnt/ssd/datasets/Fine-Grained_Recognition/"
 
 
 # ------------- general options -------------------------------------------
-outpath = "./exp_log/mobilenet_v2/DTQ/4bits"
+outpath = "./exp_log/DTQ_4bits/"
 gpu_id = "4"       # single-gpu
 print_freq = 10
 batch_size = 64
