@@ -6,7 +6,7 @@ target_data_dir = "/mnt/ssd/datasets/Fine-Grained_Recognition/"
 # ------------- general options -------------------------------------------
 outpath = "./exp_log/DTQ_4bits/"
 gpu_id = "3,5"
-seed = 5
+seed = 4
 print_freq = 10
 batch_size = 64
 num_workers = 4
