@@ -64,8 +64,6 @@ def get_model(base_model_name, base_task, logger, args):
     for param in model_source.parameters():
         param.requires_grad = False
 
-    # model_target = model_target
-    # model_source = model_source.cuda()
     logger.info('base_task = {}, get model_source = {} and model_target ={}'
                 .format(base_task, base_model_name, base_model_name))
     return model_source, model_target
@@ -88,8 +86,6 @@ def model_split(base_model_name, model, target_class_num, logger, args):
         model_source_classifier = model.classifier[1]
         logger.info('model_source_classifier:\n{}'.format(model_source_classifier))
 
-        # model_target_classifier = QLinear(list(model.classifier.children())[1].in_features,target_class_num, bias=False,
-        #                                         bits_weights=args.bits_weights, bits_activations=args.bits_activations)
         model_target_classifier = nn.Linear(list(model.classifier.children())[1].in_features,target_class_num)
 
         logger.info('model_target_classifier:\n{}'.format(model_target_classifier))
@@ -101,7 +97,6 @@ def model_split(base_model_name, model, target_class_num, logger, args):
     else:
         logger.info('unknown base_model_name={}'.format(base_model_name))
 
-    # return model_feature.cuda(), model_source_classifier.cuda(), model_target_classifier.cuda()
     return model_feature, model_source_classifier, model_target_classifier
 
 

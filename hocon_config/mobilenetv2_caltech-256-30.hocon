@@ -1,6 +1,6 @@
 # ------------- data options ----------------------------------------
 target_dataset = "Caltech_256-30"  # Stanford_Dogs, Caltech_256-30, Caltech_256-60, CUB-200-2011, Food-101
-target_data_dir = "/mnt/ssd/datasets/Fine-Grained_Recognition/"
+target_data_dir = "/mnt/ssd/Datasets/Fine-Grained_Recognition/"
 
 
 # ------------- general options -------------------------------------------

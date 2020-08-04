@@ -173,7 +173,7 @@ class TransferFramework:
                     fea_loss = reg_channel_att_fea_map_learn(self.layer_outputs_source, self.layer_outputs_target,
                                                          self.feature_criterions, self.setting.bits_activations, self.logger)
             elif self.reg_type == 'fea_loss':
-                    fea_loss = reg_fea_map(self.layer_outputs_source, self.layer_outputs_target)
+                fea_loss = reg_fea_map(self.layer_outputs_source, self.layer_outputs_target)
             else:
                 assert False, "Wrong reg type!!!"
 

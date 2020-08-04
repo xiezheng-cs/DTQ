@@ -102,8 +102,6 @@ def train_net(args, logger, seed):
         if val_top1_acc >= val_best_acc:
             val_best_acc = val_top1_acc
             val_best_acc_index = epoch
-            # save model_target
-            # save_model(args.outpath, epoch, model_feature, model_target_classifier, val_best_acc, logger)
             # save_checkpoint
             save_checkpoint(args.outpath, epoch, model_feature, model_source_classifier, model_target_classifier,
                             optimizer, lr_scheduler, val_best_acc)
