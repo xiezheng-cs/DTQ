@@ -23,18 +23,8 @@ def reg_classifier(model, fc_name):
     return l2_cls
 
 
-def reg_fea_map(layer_outputs_source, layer_outputs_target):
-
-    fea_loss = torch.tensor(0.).cuda()
-    for fm_src, fm_tgt in zip(layer_outputs_source, layer_outputs_target):
-        b, c, h, w = fm_src.shape
-        fea_loss += 0.5 * (torch.norm(fm_tgt - fm_src.detach()) ** 2) / b
-    return fea_loss
-
-
 def flatten_outputs(fea):
     return torch.reshape(fea, (fea.shape[0], fea.shape[1], fea.shape[2] * fea.shape[3]))
-
 
 def get_reg_criterions(args, logger):
     if args.base_model_name in ['resnet50', 'resnet101']:
@@ -116,23 +106,9 @@ def reg_channel_att_fea_map_learn(layer_outputs_source, layer_outputs_target,
 def get_feature_criterions(args, in_channels_list, feature_size, logger):
     feature_criterions = nn.ModuleList()
     for i in range(len(in_channels_list)):
-        if args.reg_type == 'pixel_att_fea_map_learn':
-            feature_criterions.append(pixel_attention(in_channels_list[i], feature_size[i]))
 
-        elif args.reg_type == 'channel_att_fea_map_learn':
+        if args.reg_type == 'channel_att_fea_map_learn':
             feature_criterions.append(channel_attention(in_channels_list[i], feature_size[i]))
-    
-        elif args.reg_type == 'channel_pixel_att_fea_map_learn':
-            feature_criterions.append(channel_pixel_attention(in_channels_list[i], feature_size[i]))
-
-        elif args.reg_type == 'fea_loss':
-            return None
-
-        elif args.reg_type == 'finetune':
-            pass
-
-        elif args.reg_type == 'l2fe':
-            pass
         else:
             assert False, logger.info('invalid reg_type={}'.format(args.reg_type))
 

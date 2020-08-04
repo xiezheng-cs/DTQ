@@ -134,7 +134,7 @@ if __name__ == '__main__':
         if i == 1:
             args.copy_code(logger, dst=os.path.join(args.outpath, 'code'))
 
-        val_acc = train_net(args, logger, seed=i)
+        val_acc = train_net(args, logger, seed=(args.seed+i))
         best_val_acc_list.append(val_acc)
 
     acc_mean = np.mean(best_val_acc_list)

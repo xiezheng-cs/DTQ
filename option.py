@@ -19,7 +19,7 @@ class Option(object):
         # ------------- general options ----------------------------------------
         self.outpath = self.conf['outpath']  # log path
         self.gpu_id = self.conf['gpu_id']  # GPU id to use, e.g. "0,1,2,3"
-        # self.seed = self.conf['seed']  # manually set RNG seed
+        self.seed = self.conf['seed']  # manually set RNG seed
         self.print_freq = self.conf['print_freq']  # print frequency (default: 10)
         self.batch_size = self.conf['batch_size']  # mini-batch size
         self.num_workers = self.conf['num_workers']  # num_workers

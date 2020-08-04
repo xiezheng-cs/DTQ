@@ -4,7 +4,7 @@ from torch import nn
 from utils.util import AverageMeter
 # from prefetch_generator import BackgroundGenerator
 from utils.util import get_learning_rate, accuracy, record_epoch_learn_alpha, get_fc_name
-from models.regularizer import reg_fea_map, reg_channel_att_fea_map_learn
+from models.regularizer import reg_channel_att_fea_map_learn
 from models.loss_function import loss_kl, get_fea_map_loss
 
 
@@ -131,25 +131,19 @@ class TransferFramework:
         self.lr = get_learning_rate(self.optimizer)
         self.logger.info('self.optimizer={}'.format(self.optimizer))
 
-        # use prefetch_generator
-        # target_par = BackgroundGenerator(self.train_loader)
-
         self.logger.info('kl_loss weight lambada={}'.format(self.lambada))
         self.logger.info('fea_loss weight theta={}'.format(self.theta))
         self.logger.info('T={}'.format(self.setting.T))
         self.logger.info("reg_type: {}".format(self.reg_type))
-        # for i, (imgs, labels) in enumerate(target_par):
+
         for i, (imgs, labels) in enumerate(self.train_loader):
-            # target_data
+
             if torch.cuda.is_available():
                 imgs = imgs.cuda()
                 labels = labels.cuda()
 
             # taget forward and loss
-            if self.base_model_name == 'inception_v3':
-                target_outputs, _ = self.model_feature(imgs)
-            else:
-                target_outputs = self.model_feature(imgs)
+            target_outputs = self.model_feature(imgs)
 
             target_model_source_classifier_outputs = self.model_source_classifier(target_outputs)
             target_model_target_classifier_outputs = self.model_target_classifier(target_outputs)
@@ -161,9 +155,7 @@ class TransferFramework:
             # loss
             clc_loss = self.loss_fn(target_model_target_classifier_outputs, labels)
             kl_loss = loss_kl(target_model_source_classifier_outputs, source_outputs, self.setting.T)
-            # fm_mse_loss = get_fea_map_loss(self.layer_outputs_source, self.layer_outputs_target, self.criterion_mse)
-            # fea_loss = reg_fea_map(layer_outputs_source, layer_outputs_target)
-
+            
             if self.reg_type == 'channel_att_fea_map_learn':
                 if self.theta == 0.0:
                     # print('self.theta == 0')
@@ -172,13 +164,9 @@ class TransferFramework:
                 else:
                     fea_loss = reg_channel_att_fea_map_learn(self.layer_outputs_source, self.layer_outputs_target,
                                                          self.feature_criterions, self.setting.bits_activations, self.logger)
-            elif self.reg_type == 'fea_loss':
-                fea_loss = reg_fea_map(self.layer_outputs_source, self.layer_outputs_target)
             else:
                 assert False, "Wrong reg type!!!"
 
-            # total_loss = clc_loss + self.lambada * (kl_loss +  fm_mse_loss)
-            # lambda 0.5, 
             total_loss = clc_loss + self.lambada * kl_loss +  self.theta * fea_loss
 
             self.optimizer.zero_grad()
