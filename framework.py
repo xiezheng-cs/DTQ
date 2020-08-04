@@ -5,7 +5,7 @@ from utils.util import AverageMeter
 # from prefetch_generator import BackgroundGenerator
 from utils.util import get_learning_rate, accuracy, record_epoch_learn_alpha, get_fc_name
 from models.regularizer import reg_channel_att_fea_map_learn
-from models.loss_function import loss_kl, get_fea_map_loss
+from models.loss_function import loss_kl
 
 
 class TransferFramework:

@@ -15,7 +15,7 @@ exp_id = "20200730"
 
 # ------------- common optimization options ----------------------------
 repeat = 5
-lr = 0.01        # 0.01 for resnet101, 0.001 for inception_v3
+lr = 0.01        # 0.01 for resnet50 and mobilenet_v2
 max_iter = 9000       # 9000, 6000 decay
 momentum = 0.9
 weight_decay = 1e-4   # for classifier
@@ -32,10 +32,10 @@ bits_activations = 4             # 32, 5, 4 bit
 
 
 # ------------- finetuning options ------------------------------------------
-loss_type = "CrossEntropyLoss"       # CrossEntropyLoss, loss_label_smoothing
-lr_scheduler = "steplr"              # coslr, steplr
-reg_type = "channel_att_fea_map_learn"  # channel_att_fea_map_learn, fea_loss
-lambada = 0.5                    # kl_loss weight, lambada =0.0, 0.5, 1.0, 2.0
+loss_type = "CrossEntropyLoss"       # CrossEntropyLoss
+lr_scheduler = "steplr"              # steplr
+reg_type = "channel_att_fea_map_learn"  # channel_att_fea_map_learn
+lambada = 0.5                    # kl_loss weight
 theta = 0.01                     # channel_att_fea_map_loss theta 0.01
 T = 30.0
 
