@@ -16,6 +16,7 @@ def loss_kl(outputs, teacher_outputs, T=1.0):
                                                          F.softmax(teacher_outputs / T)) / outputs.shape[0]
     return kl_loss
 
+
 def get_loss_type(loss_type, logger=None):
 
     if loss_type == 'CrossEntropyLoss':

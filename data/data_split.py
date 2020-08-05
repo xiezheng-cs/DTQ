@@ -17,6 +17,7 @@ def get_path_str(line):
     # print('line={}, path={}'.format(line, path))
     return path
 
+
 def path_replace(line):
     return line.replace('/', '\\')
 
@@ -35,7 +36,6 @@ def copy_img(root, list, save_path):
         target_img_path = path_replace(os.path.join(target_img_dir, name))
         print('source_img_path={}, target_img_path={}'.format(source_img_path, target_img_path))
         shutil.copy(source_img_path, target_img_path)
-
 
 
 if __name__ == '__main__':

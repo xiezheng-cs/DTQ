@@ -47,7 +47,6 @@ def get_base_model(base_model, model_type, logger, args):  # interface for obtai
         assert False, "Not exist this model_type {}".format(model_type)
 
 
-
 def get_model(base_model_name, base_task, logger, args):  # obtain source and target model
     model_source = get_base_model(base_model_name, "source", logger, args)
     model_target = get_base_model(base_model_name, "target", logger, args)
@@ -61,7 +60,6 @@ def get_model(base_model_name, base_task, logger, args):  # obtain source and ta
     logger.info('base_task = {}, get model_source = {} and model_target ={}'
                 .format(base_task, base_model_name, base_model_name))
     return model_source, model_target
-
 
 
 def model_split(base_model_name, model, target_class_num, logger, args):  # split the target model into feature extractor and classifier
@@ -92,7 +90,6 @@ def model_split(base_model_name, model, target_class_num, logger, args):  # spli
         logger.info('unknown base_model_name={}'.format(base_model_name))
 
     return model_feature, model_source_classifier, model_target_classifier
-
 
 
 if __name__ == '__main__':

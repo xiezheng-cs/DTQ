@@ -18,6 +18,7 @@ from quantization.google_quantization import quantization_on_input
 def flatten_outputs(fea):
     return torch.reshape(fea, (fea.shape[0], fea.shape[1], fea.shape[2] * fea.shape[3]))
 
+
 def get_reg_criterions(args, logger):
     if args.base_model_name in ['resnet50', 'resnet101']:
         in_channels_list = [256, 512, 1024, 2048]
@@ -27,7 +28,6 @@ def get_reg_criterions(args, logger):
         feature_size = [71, 35, 17, 8]
     elif args.base_model_name in ['mobilenet_v2']:
         in_channels_list = [32, 64, 96, 320]
-
         feature_size = [28, 14, 14, 7]
     else:
         assert False, logger.info('invalid base_model_name={}'.format(args.base_model_name))
@@ -36,7 +36,6 @@ def get_reg_criterions(args, logger):
     logger.info('feature_size={}'.format(feature_size))
 
     feature_criterions = get_feature_criterions(args, in_channels_list, feature_size, logger)  # obtain channel attentive module
-
     return feature_criterions
 
 
@@ -66,8 +65,9 @@ class channel_attention(nn.Module):  # channel attentive module
         return channel_attention_weight
 
 
+# obtain channel feature alignment loss
 def reg_channel_att_fea_map_learn(layer_outputs_source, layer_outputs_target,
-                                  feature_criterions, bits_activations, logger):   # obtain channel feature alignment loss
+                                  feature_criterions, bits_activations, logger):
     if isinstance(feature_criterions, nn.DataParallel):
         feature_criterions_module = feature_criterions.module
         layer_outputs_source_processed = concat_gpu_data(layer_outputs_source)
@@ -76,8 +76,8 @@ def reg_channel_att_fea_map_learn(layer_outputs_source, layer_outputs_target,
         feature_criterions_module = feature_criterions
         layer_outputs_source_processed = layer_outputs_source
         layer_outputs_target_processed = layer_outputs_target
-    fea_loss = torch.tensor(0.).cuda()
 
+    fea_loss = torch.tensor(0.).cuda()
     for i, (fm_src, fm_tgt, feature_criterion) in \
             enumerate(zip(layer_outputs_source_processed, layer_outputs_target_processed, feature_criterions_module)):
         channel_attention_weight = feature_criterion(fm_src)   # b, c

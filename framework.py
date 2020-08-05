@@ -1,15 +1,11 @@
-import numpy as np
 import torch
-from torch import nn
 from utils.util import AverageMeter
-# from prefetch_generator import BackgroundGenerator
-from utils.util import get_learning_rate, accuracy, record_epoch_learn_alpha, get_fc_name
+from utils.util import get_learning_rate, accuracy
 from models.regularizer import reg_channel_att_fea_map_learn
 from models.loss_function import loss_kl
 
 
 class TransferFramework:
-
     def __init__(self, args, train_loader, val_loader, target_class_num, data_aug, base_model_name,
                  model_source, model_feature, model_source_classifier, model_target_classifier, feature_criterions,
                  loss_fn, num_epochs, optimizer, lr_scheduler, writer, logger, print_freq=10):
@@ -141,7 +137,7 @@ class TransferFramework:
                 imgs = imgs.cuda()
                 labels = labels.cuda()
 
-            # taget forward and loss
+            # target forward and loss
             target_outputs = self.model_feature(imgs)
 
             target_model_source_classifier_outputs = self.model_source_classifier(target_outputs)
@@ -160,7 +156,7 @@ class TransferFramework:
                     fea_loss = 0.0
                 else:
                     fea_loss = reg_channel_att_fea_map_learn(self.layer_outputs_source, self.layer_outputs_target,
-                                                         self.feature_criterions, self.setting.bits_activations, self.logger)
+                                                             self.feature_criterions, self.setting.bits_activations, self.logger)
             else:
                 assert False, "Wrong reg type!!!"
 
