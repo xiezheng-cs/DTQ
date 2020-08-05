@@ -43,8 +43,6 @@ def get_target_dataloader(dataset, batch_size, n_threads, data_path='',  image_s
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
     if data_aug == 'default':
-        # torchvision.set_image_backend('accimage')
-        # logger.info('torchvision.set_image_backend(\'accimage\')')
         logger.info('data_aug = {} !!!'.format(data_aug))
         train_transform = transforms.Compose([
             transforms.Resize((resize, resize)),
@@ -57,31 +55,12 @@ def get_target_dataloader(dataset, batch_size, n_threads, data_path='',  image_s
             transforms.CenterCrop(image_size),
             transforms.ToTensor(),
             normalize])
-
-    elif data_aug == 'improved':
-        logger.info('data_aug = {} !!!'.format(data_aug))
-        train_transform = transforms.Compose([
-            transforms.Resize(resize),
-            transforms.RandomHorizontalFlip(),
-            transforms.CenterCrop(resize),      # important
-            transforms.RandomCrop(image_size),
-            transforms.ToTensor(),
-            normalize])
-
-        val_transform = transforms.Compose([
-            transforms.Resize(resize),
-            transforms.TenCrop(image_size),
-            transforms.Lambda(lambda crops: torch.stack([transforms.ToTensor()(crop) for crop in crops])),
-            transforms.Lambda(lambda crops: torch.stack([normalize(crop) for crop in crops]))
-        ])
-
     else:
         assert False, logger.info("invalid data_aug={}".format(data_aug))
 
     # data root
     if dataset in ['MIT_Indoors_67', 'Stanford_Dogs', 'Caltech_256-10', 'Caltech_256-20',
-                   'Caltech_256-30', 'Caltech_256-40', 'Caltech_256-60', 'CUB-200-2011', 'Food-101', 'DeepFashion_0.1',
-                   'DeepFashion_0.05']:
+                   'Caltech_256-30', 'Caltech_256-40', 'Caltech_256-60', 'CUB-200-2011', 'Food-101']:
         data_root = os.path.join(data_path, dataset)
     else:
         assert False, logger.info("invalid dataset={}".format(dataset))
@@ -100,10 +79,6 @@ def get_target_dataloader(dataset, batch_size, n_threads, data_path='',  image_s
                               shuffle=True,
                               pin_memory=True,
                               num_workers=n_threads)
-
-    if data_aug == 'improved':
-        batch_size = int(batch_size / 4)
-        logger.info('{}: batch_size = batch_size / 4 = {}'.format(data_aug, batch_size))
 
     val_loader = DataLoader(dataset=val_dataset,
                             batch_size=batch_size,

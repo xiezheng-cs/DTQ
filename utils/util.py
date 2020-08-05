@@ -163,29 +163,6 @@ def write_settings(settings):
             f.write(str(k) + ": " + str(v) + "\n")
 
 
-
-# def get_optimier_and_scheduler(args, model, num_epochs, step, logger):
-#     optimizer = optim.SGD([{'params': model.parameters()}],
-#                           lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
-#     # optimizer = optim.SGD([{'params': model.parameters()},
-#     #                        {'params': auxClassifier_list.parameters(), 'weight_decay':args.weight_decay}],
-#     #                       lr=args.lr, momentum=args.momentum)
-#     logger.info('optimizer={}'.format(optimizer))
-#
-#     # lr_scheduler
-#     if args.lr_scheduler == 'coslr':
-#         lr_scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, num_epochs)
-#         logger.info('lr_scheduler: CosineAnnealingLr !!!')
-#     elif args.lr_scheduler == 'steplr':
-#         lr_scheduler = MultiStepLR(optimizer, milestones=step, gamma=args.gamma)
-#         logger.info('lr_scheduler: SGD MultiStepLR !!!')
-#     else:
-#         assert False, logger.info("invalid lr_scheduler={}".format(args.lr_scheduler))
-#
-#     logger.info('lr_scheduler={}'.format(lr_scheduler))
-#     return optimizer, lr_scheduler
-
-
 def get_optimier_and_scheduler(args, model_feature, model_target_classifier, feature_criterions, step, logger):
     # model_source_classifier fixed
     if len(args.gpu_id) > 1:
@@ -233,8 +210,6 @@ def get_channel_weight(channel_weight_path, logger=None):
             cw = torch.from_numpy(js).float().cuda()
             cw = F.softmax(cw / 5.0).detach()
             channel_weights.append(cw)
-
-        # logger.info('load channel_weight_path={} success!'.format(channel_weight_path))
     else:
         logger.info("channel_weight_path is None")
         return None
@@ -242,15 +217,12 @@ def get_channel_weight(channel_weight_path, logger=None):
     return channel_weights
 
 
-def concat_gpu_data(data):
+def concat_gpu_data(data):  # when data distribute to different GPU, we concat the feature in different GPU but in the same position
     """
     Concat gpu data from different gpu.
     """
-    # print(data)
     gpu_id = list(data.keys())
-    # print(gpu_id)
     gpu_id.sort()
-    # print(gpu_id)
     main_gpu_id = gpu_id[0]
     data_features = []
     for j, i in enumerate(gpu_id):
@@ -262,26 +234,6 @@ def concat_gpu_data(data):
                 data_features[k] = torch.cat((data_features[k], fea.cuda(int(main_gpu_id))))
 
     return data_features
-
-# learn all layer
-# def get_conv_num(base_model_name, model_source, fc_name, logger):
-#     model_source_weights = {}
-#     if 'resnet' in base_model_name:
-#         for name, param in model_source.named_parameters():
-#             # print('name={}'.format(name))
-#             if not name.startswith(fc_name):
-#                 model_source_weights[name] = param.detach()
-#     # to do
-#     # elif 'inception' in base_model_name:
-#     else:
-#         assert False, logger.info("invalid base_model_name={}, "
-#                                   "do not know fc_name ".format(base_model_name))
-#
-#     layer_length = len(model_source_weights)
-#     return layer_length
-
-
-# learn conv layer
 
 def get_conv_num(base_model_name, model_source, fc_name, logger):
     model_source_weights = {}

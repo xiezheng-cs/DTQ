@@ -9,40 +9,34 @@
 import pickle
 import torch
 import torch.nn as nn
-from torchvision.models import resnet50, resnet101, inception_v3, mobilenet_v2
+from torchvision.models import resnet50, mobilenet_v2
 from quantization.qmobilenet import Qmobilenet_v2
-# from quantization.qmobilenet_all import Qmobilenet_v2
-from quantization.qresnet import Qresnet101, Qresnet50
-from quantization.google_quantization import QLinear
+from quantization.qresnet import Qresnet50
 
 
-
-def pretrained_model_imagenet(base_model):
+def pretrained_model_imagenet(base_model):   # load pre-trained model 
     return eval(base_model)(pretrained=True)
 
 
-def get_base_model(base_model, model_type, logger, args):
+def get_base_model(base_model, model_type, logger, args):  # interface for obtaining full precision or low precision model
     if model_type == 'source':
         return pretrained_model_imagenet(base_model)
 
     elif model_type == 'target':
 
-        if args.bits_weights == 32 and args.bits_activations == 32:
+        if args.bits_weights == 32 and args.bits_activations == 32:   # full precision model
             model_target = pretrained_model_imagenet(base_model)
             logger.info('bits_weights and bits_activations == {}, '
                         'target model is full-precision!'.format(args.bits_weights))
             return model_target
 
         else:
-            if base_model == "resnet101":
-                model_target = Qresnet101(pretrained=True, bits_weights=args.bits_weights,
-                                          bits_activations=args.bits_activations)
-            elif base_model == "mobilenet_v2":
+            if base_model == "mobilenet_v2":
                 model_target = Qmobilenet_v2(pretrained=True, bits_weights=args.bits_weights,
-                                             bits_activations=args.bits_activations)
+                                             bits_activations=args.bits_activations)  # load low-precision mobilenet_v2 model
             elif base_model == "resnet50":
                 model_target = Qresnet50(pretrained=True,bits_weights=args.bits_weights,
-                                         bits_activations=args.bits_activations)
+                                         bits_activations=args.bits_activations)  # load low-precision ResNet-101 model
             else:
                 assert False, "The model {} not allowed".format(base_model)
 
@@ -54,7 +48,7 @@ def get_base_model(base_model, model_type, logger, args):
 
 
 
-def get_model(base_model_name, base_task, logger, args):
+def get_model(base_model_name, base_task, logger, args):  # obtain source and target model
     model_source = get_base_model(base_model_name, "source", logger, args)
     model_target = get_base_model(base_model_name, "target", logger, args)
 
@@ -70,7 +64,7 @@ def get_model(base_model_name, base_task, logger, args):
 
 
 
-def model_split(base_model_name, model, target_class_num, logger, args):
+def model_split(base_model_name, model, target_class_num, logger, args):  # split the target model into feature extractor and classifier
     if 'resnet' in base_model_name:
         model_source_classifier = model.fc
         logger.info('model_source_classifier:\n{}'.format(model_source_classifier))

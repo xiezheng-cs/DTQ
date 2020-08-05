@@ -15,14 +15,6 @@ from utils.util import get_conv_num, get_fc_name, concat_gpu_data
 from quantization.google_quantization import quantization_on_input
 
 
-def reg_classifier(model, fc_name):
-    l2_cls = torch.tensor(0.).cuda()
-    for name, param in model.named_parameters():
-        if name.startswith(fc_name):
-            l2_cls += 0.5 * torch.norm(param) ** 2
-    return l2_cls
-
-
 def flatten_outputs(fea):
     return torch.reshape(fea, (fea.shape[0], fea.shape[1], fea.shape[2] * fea.shape[3]))
 
@@ -43,12 +35,12 @@ def get_reg_criterions(args, logger):
     logger.info('in_channels_list={}'.format(in_channels_list))
     logger.info('feature_size={}'.format(feature_size))
 
-    feature_criterions = get_feature_criterions(args, in_channels_list, feature_size, logger)
+    feature_criterions = get_feature_criterions(args, in_channels_list, feature_size, logger)  # obtain channel attentive module
 
     return feature_criterions
 
 
-class channel_attention(nn.Module):
+class channel_attention(nn.Module):  # channel attentive module
     def __init__(self, in_channels, feature_size):
         super(channel_attention, self).__init__()
 
@@ -75,7 +67,7 @@ class channel_attention(nn.Module):
 
 
 def reg_channel_att_fea_map_learn(layer_outputs_source, layer_outputs_target,
-                                  feature_criterions, bits_activations, logger):
+                                  feature_criterions, bits_activations, logger):   # obtain channel feature alignment loss
     if isinstance(feature_criterions, nn.DataParallel):
         feature_criterions_module = feature_criterions.module
         layer_outputs_source_processed = concat_gpu_data(layer_outputs_source)

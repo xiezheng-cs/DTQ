@@ -32,12 +32,12 @@ class Option(object):
         self.max_iter = self.conf['max_iter']  # number of total epochs
         self.momentum = self.conf['momentum']  # momentum
         self.weight_decay = float(self.conf['weight_decay'])  # weight decay
-        self.gamma = self.conf['gamma']
+        self.gamma = self.conf['gamma']  # the times  for drop lr
         self.bits_weights = self.conf['bits_weights']
         self.bits_activations = self.conf['bits_activations']
-        self.lambada = self.conf['lambada']
-        self.theta = self.conf['theta']
-        self.T = self.conf['T']
+        self.lambada = self.conf['lambada']  # kl loss weight
+        self.theta = self.conf['theta']  # channel_att_fea_map_loss weight
+        self.T = self.conf['T']  # the parameter of the KL loss
 
         # ------------- model options ------------------------------------------
         self.base_task = self.conf['base_task']
@@ -59,7 +59,7 @@ class Option(object):
         self.resume = None if len(self.conf['resume']) == 0 else self.conf['resume']
 
 
-    def set_save_path(self):
+    def set_save_path(self):  # save log path
         exp_id = 'log_{}_{}_img{}_da-{}_{}_iter{}_bs{}_{}_lr{}_wd{}_W{}A{}_lambada{}_theta{}_T{}_{}' \
             .format(self.base_task, self.target_dataset, self.image_size, self.data_aug, self.base_model_name,
                     self.max_iter, self.batch_size, self.lr_scheduler, self.lr, self.weight_decay,
@@ -69,7 +69,7 @@ class Option(object):
         self.outpath = os.path.join(self.outpath, path, exp_id)
         # self.outpath = os.path.join(self.outpath, exp_id)
 
-    def copy_code(self, logger, src=os.path.abspath("./"), dst="./code/"):
+    def copy_code(self, logger, src=os.path.abspath("./"), dst="./code/"):  # save code
         """
         copy code in current path to a folder
         """

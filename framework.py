@@ -121,7 +121,6 @@ class TransferFramework:
 
         clc_losses = AverageMeter()
         kl_losses = AverageMeter()
-        # fm_mse_losses = AverageMeter()
         fea_losses = AverageMeter()
 
         total_losses = AverageMeter()
@@ -158,9 +157,7 @@ class TransferFramework:
             
             if self.reg_type == 'channel_att_fea_map_learn':
                 if self.theta == 0.0:
-                    # print('self.theta == 0')
                     fea_loss = 0.0
-
                 else:
                     fea_loss = reg_channel_att_fea_map_learn(self.layer_outputs_source, self.layer_outputs_target,
                                                          self.feature_criterions, self.setting.bits_activations, self.logger)
@@ -173,13 +170,11 @@ class TransferFramework:
             total_loss.backward()
             self.optimizer.step()
 
-            # batch update
             self.layer_outputs_source.clear()
             self.layer_outputs_target.clear()
 
             clc_losses.update(clc_loss.item(), imgs.size(0))
             kl_losses.update(kl_loss.item(), imgs.size(0))
-            # fm_mse_losses.update(fm_mse_loss.item(), imgs.size(0))
 
             if fea_loss == 0.0:
                 fea_losses.update(fea_loss, imgs.size(0))
@@ -198,13 +193,10 @@ class TransferFramework:
                         .format(epoch, self.num_epochs, i, len(self.train_loader), self.lr, clc_losses.avg,
                                 kl_losses.avg, fea_losses.avg, total_losses.avg, train_top1_accs.avg))
 
-            # break
-
         # save tensorboard
         self.writer.add_scalar('lr', self.lr, epoch)
         self.writer.add_scalar('Train_classification_loss', clc_losses.avg, epoch)
         self.writer.add_scalar('Train_kl_loss', kl_losses.avg, epoch)
-        # self.writer.add_scalar('Train_fm_mse_loss', fm_mse_losses.avg, epoch)
         self.writer.add_scalar('Train_fea_loss', fea_losses.avg, epoch)
         self.writer.add_scalar('Train_total_loss', total_losses.avg, epoch)
         self.writer.add_scalar('Train_top1_accuracy', train_top1_accs.avg, epoch)
@@ -260,8 +252,7 @@ class TransferFramework:
             if i % self.print_freq == 0:
                 self.logger.info('Val Epoch: [{:d}/{:d}][{:d}/{:d}]\tval_loss={:.4f}\t\ttop1_accuracy={:.4f}\t'
                             .format(epoch, self.num_epochs, i, len(self.val_loader), val_losses.avg, val_top1_accs.avg))
-            # break
-
+        # save tensorboard
         self.writer.add_scalar('Val_loss', val_losses.avg, epoch)
         self.writer.add_scalar('Val_top1_accuracy', val_top1_accs.avg, epoch)
 
