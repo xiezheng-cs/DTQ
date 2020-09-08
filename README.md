@@ -58,9 +58,9 @@ To quantize the pre-trained ResNet-50 on Caltech 256-30 to 4-bit:
 ## Citation
 If this work is useful for your research, please cite our paper:
 
-   @InProceedings{xie2020deep,
+    @InProceedings{xie2020deep,
     title = {Deep Transferring Quantization},
-    author = {Zheng Xie, Zhiquan Wen, Jing Liu, Zhiqiang Liu, Xixian Wu, and Mingkui Tan},
+    author = {Zheng, Xie and Zhiquan, Wen and Jing, Liu and Zhiqiang, Liu and Xixian, Wu and Mingkui, Tan},
     booktitle = {European Conference on Computer Vision},
     year = {2020}
     }
