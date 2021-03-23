@@ -60,7 +60,6 @@ class QConv2d(nn.Conv2d):
         self.bits_weights = bits_weights
         self.bits_activations = bits_activations
 
-
     def forward(self, input):
         if self.bits_activations == 32:
             quantized_input = input
@@ -69,7 +68,6 @@ class QConv2d(nn.Conv2d):
         quantized_weight = quantization_on_weights(self.weight, self.bits_weights)
         return F.conv2d(quantized_input, quantized_weight, self.bias, self.stride,
                         self.padding, self.dilation, self.groups)
-
 
     def extra_repr(self):
         s = super().extra_repr()
@@ -99,6 +97,7 @@ class QLinear(nn.Linear):
         s += ", bits_activations={}".format(self.bits_activations)
         s += ", method={}".format("google")
         return s
+
 
 if __name__ == "__main__":
     x = torch.rand(2,2,2,2)

@@ -23,21 +23,21 @@ gamma = 0.1
 
 
 # ------------- model options ------------------------------------------
-base_task = "imagenet"            # imagenet
+base_task = "imagenet"               # imagenet
 base_model_name = "mobilenet_v2"     # resnet50, mobilenet_v2
 image_size = 224                  # 224 for resnet101, mobilenet_v2
 data_aug = "default"              # default
-bits_weights = 4                 # 32, 5, 4 bit
-bits_activations = 4             # 32, 5, 4 bit
+bits_weights = 4                  # 32, 5, 4 bit
+bits_activations = 4              # 32, 5, 4 bit
 
 
-# ------------- finetuning options ------------------------------------------
-loss_type = "CrossEntropyLoss"       # CrossEntropyLoss
-lr_scheduler = "steplr"              # steplr
-reg_type = "channel_att_fea_map_learn"  # channel_att_fea_map_learn
-lambada = 0.5                    # kl_loss weight
-theta = 0.01                     # channel_att_fea_map_loss theta 0.01
-T = 30.0
+# ------------- training options ------------------------------------------
+loss_type = "CrossEntropyLoss"           # CrossEntropyLoss
+lr_scheduler = "steplr"                  # steplr
+reg_type = "channel_att_fea_map_learn"   # channel_att_fea_map_learn
+lambada = 0.5        # kl_loss weight
+theta = 0.01         # AFA_loss weight
+T = 30.0             # parameter of the KL loss
 
 
 # ------------- resume or retrain options ------------------------------

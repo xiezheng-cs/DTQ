@@ -1,13 +1,11 @@
 import os
 import argparse
-import json
 
 import random
 import numpy as np
 import torch
 from torch import nn
 import torch.backends.cudnn as cudnn
-import torch.nn.functional as F
 from tensorboardX import SummaryWriter
 
 from option import Option
@@ -15,10 +13,10 @@ from framework import TransferFramework
 from models.loss_function import get_loss_type
 from data.dataloader import get_target_dataloader
 from models.get_model import get_model, model_split
-from utils.checkpoint import save_checkpoint, save_model
-from models.regularizer import get_feature_criterions, get_reg_criterions
-from utils.util import get_logger, output_process, ours_record_epoch_data, write_settings, get_optimier_and_scheduler
-
+from utils.checkpoint import save_checkpoint
+from models.regularizer import get_reg_criterions
+from utils.util import get_logger, output_process, ours_record_epoch_data, \
+    write_settings, get_optimier_and_scheduler
 
 
 def train_net(args, logger, seed):
@@ -90,7 +88,7 @@ def train_net(args, logger, seed):
                                   feature_criterions, loss_fn, num_epochs, optimizer, lr_scheduler,
                                   writer, logger, print_freq=args.print_freq)
 
-    # Epochs
+    # epochs
     for epoch in range(start_epoch, num_epochs):
         # train epoch
         clc_loss, kl_loss, fea_loss, train_total_loss, train_top1_acc = framework.train(epoch)
@@ -111,7 +109,6 @@ def train_net(args, logger, seed):
     return val_best_acc
 
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Transfer')
     parser.add_argument('conf_path', type=str, metavar='conf_path',
@@ -124,7 +121,7 @@ if __name__ == '__main__':
     best_val_acc_list = []
     logger = None
     temp = args.outpath
-    for i in range(1, args.repeat+1):
+    for i in range(1, args.repeat + 1):
         if args.repeat != 1:
             args.outpath = temp + "_{:02d}".format(i)
 

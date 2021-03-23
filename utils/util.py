@@ -217,7 +217,9 @@ def get_channel_weight(channel_weight_path, logger=None):
     return channel_weights
 
 
-def concat_gpu_data(data):  # when data distribute to different GPU, we concat the feature in different GPU but in the same position
+# when data distribute to different GPU,
+# we concat the feature in different GPU but in the same position
+def concat_gpu_data(data):
     """
     Concat gpu data from different gpu.
     """
@@ -234,6 +236,7 @@ def concat_gpu_data(data):  # when data distribute to different GPU, we concat t
                 data_features[k] = torch.cat((data_features[k], fea.cuda(int(main_gpu_id))))
 
     return data_features
+
 
 def get_conv_num(base_model_name, model_source, fc_name, logger):
     model_source_weights = {}
@@ -272,17 +275,3 @@ if __name__ == '__main__':
     print(len(channel_weights))
     print(channel_weights[0].shape)
 
-    # layer_num = len(channel_weights)
-    #
-    # layer_index = 1
-    # chennel_num = channel_weights[layer_index].shape[0]
-    #
-    # print(layer_num)
-    # print(chennel_num)
-    # # print(channel_weights[0])
-    # print(channel_weights[layer_index]*chennel_num)
-    #
-    # result = channel_weights[layer_index] * chennel_num >= 1.0
-    # sum_value = torch.sum(result)
-    # print(result)
-    # print(sum_value)

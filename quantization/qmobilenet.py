@@ -7,7 +7,6 @@ from torch.hub import load_state_dict_from_url
 from quantization.google_quantization import QConv2d
 
 
-
 __all__ = ['MobileNetV2', 'mobilenet_v2', 'QMobileNetV2']
 
 
