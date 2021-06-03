@@ -1,6 +1,6 @@
 # Deep Transferring Quantization
 
-We provide PyTorch implementation for ["Deep Transferring Quantization"](https://tanmingkui.github.io/files/publications/Deep_Transferring.pdf)(ECCV2020).
+We provide PyTorch implementation for ["Deep Transferring Quantization"](https://tanmingkui.github.io/files/publications/Deep_Transferring.pdf) (ECCV2020).
 
 <p align="center">
 <img src="framework.png" alt="DTQ" width="90%" align=center />
