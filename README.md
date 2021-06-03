@@ -64,7 +64,7 @@ If this work is useful for your research, please cite our paper:
     @InProceedings{xie2020deep,
     title = {Deep Transferring Quantization},
     author = {Zheng, Xie and Zhiquan, Wen and Jing, Liu and Zhiqiang, Liu and Xixian, Wu and Mingkui, Tan},
-    booktitle = {European Conference on Computer Vision},
+    booktitle = {European Conference on Computer Vision (ECCV)},
     year = {2020}
     }
 
