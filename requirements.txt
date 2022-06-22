@@ -1,5 +1,5 @@
 
-numpy==1.14.3
+numpy==1.22.0
 pyhocon==0.3.51
 opencv-python==4.1.0
 tensorboardX==2.0
